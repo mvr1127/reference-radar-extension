@@ -1,0 +1,11 @@
+{
+  "compilerOptions": {
+    "types": ["chrome"],
+    "target": "ESNext",
+    "module": "ESNext",
+    "moduleResolution": "Node",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true
+  }
+}
