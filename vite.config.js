@@ -9,6 +9,24 @@ export default defineConfig({
     webExtension({
       manifest: "./manifest.json",
       format: "es", // ✅ Prevents IIFE crash in background/content scripts
+      htmlViteConfig: {
+        build: {
+          rollupOptions: {
+            output: {
+              format: "es",
+            },
+          },
+        },
+      },
+      scriptViteConfig: {
+        build: {
+          rollupOptions: {
+            output: {
+              format: "es",
+            },
+          },
+        },
+      },
     }),
   ],
   build: {
@@ -25,6 +43,7 @@ export default defineConfig({
         entryFileNames: "[name].js", // 🧼 Ensures clean output filenames
         chunkFileNames: "chunks/[name]-[hash].js",
         assetFileNames: "assets/[name]-[hash][extname]",
+  format: "es",
       },
     },
   },
