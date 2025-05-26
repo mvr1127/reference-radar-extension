@@ -17,10 +17,11 @@ export default defineConfig({
     // target: "esnext", // User had this, can be kept or removed if not strictly needed now
     rollupOptions: {
       input: {
-        // Only popup.html should be an explicit input.
-        // Background and content scripts will be inferred by the plugin from manifest.json
         popup: resolve(__dirname, "popup.html"),
+        background: resolve(__dirname, "src/background.ts"),
+        content: resolve(__dirname, "src/content.ts"),
       },
+
       output: {
         format: "es",
         inlineDynamicImports: false, // Required for multiple outputs and code splitting

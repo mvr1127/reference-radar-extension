@@ -1,4 +1,4 @@
-import App from "./Popup.svelte";
+import App from "./src/App.svelte";
 const app = new App({
   target: document.getElementById("app")!,
 });
