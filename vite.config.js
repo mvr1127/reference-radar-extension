@@ -1,49 +1,32 @@
 import { defineConfig } from "vite";
 import { svelte } from "@sveltejs/vite-plugin-svelte";
-import webExtension from "vite-plugin-web-extension";
+import webExtension from "@samrum/vite-plugin-web-extension"; // Using the new plugin
 import { resolve } from "path";
+import manifestJson from "./manifest.json" assert { type: "json" };
 
 export default defineConfig({
   plugins: [
     svelte(),
     webExtension({
-      manifest: "./manifest.json",
-      format: "es", // ✅ Prevents IIFE crash in background/content scripts
-      htmlViteConfig: {
-        build: {
-          rollupOptions: {
-            output: {
-              format: "es",
-            },
-          },
-        },
-      },
-      scriptViteConfig: {
-        build: {
-          rollupOptions: {
-            output: {
-              format: "es",
-            },
-          },
-        },
-      },
+      manifest: manifestJson, // Use the imported JSON object
     }),
   ],
   build: {
     outDir: "dist",
     emptyOutDir: true,
+    // target: "esnext", // User had this, can be kept or removed if not strictly needed now
     rollupOptions: {
       input: {
+        // Only popup.html should be an explicit input.
+        // Background and content scripts will be inferred by the plugin from manifest.json
         popup: resolve(__dirname, "popup.html"),
-        background: resolve(__dirname, "src/background.ts"),
-        content: resolve(__dirname, "src/content.ts"),
       },
       output: {
-        inlineDynamicImports: false, // ✅ Allows multi-entry points
-        entryFileNames: "[name].js", // 🧼 Ensures clean output filenames
+        format: "es",
+        inlineDynamicImports: false, // Required for multiple outputs and code splitting
+        entryFileNames: "[name].js",
         chunkFileNames: "chunks/[name]-[hash].js",
         assetFileNames: "assets/[name]-[hash][extname]",
-  format: "es",
       },
     },
   },
