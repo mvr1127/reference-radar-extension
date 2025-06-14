@@ -24,7 +24,7 @@ export default defineConfig({
         permissions: ["tabs", "storage", "activeTab"],
         host_permissions: ["<all_urls>"],
         background: {
-          service_worker: "background.js",
+          service_worker: "src/background.ts", // Changed from "background.js"
           type: "module",
         },
       },
