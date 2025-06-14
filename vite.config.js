@@ -15,16 +15,11 @@ export default defineConfig({
         description: "Save references to your Reference Radar account.",
         action: {
           default_popup: "popup.html",
-          default_icon: {
-            16: "icons/icon16.png",
-            48: "icons/icon48.png",
-            128: "icons/icon128.png",
-          },
         },
         permissions: ["tabs", "storage", "activeTab"],
         host_permissions: ["<all_urls>"],
         background: {
-          service_worker: "background.js",
+          service_worker: "src/background.ts", // Changed from "background.js"
           type: "module",
         },
       },
