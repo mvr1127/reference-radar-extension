@@ -1,29 +1,54 @@
 import { defineConfig } from "vite";
 import { svelte } from "@sveltejs/vite-plugin-svelte";
-import webExtension from "@samrum/vite-plugin-web-extension"; // Using the new plugin
+import webExtension from "@samrum/vite-plugin-web-extension";
 import { resolve } from "path";
-import manifestJson from "./manifest.json" assert { type: "json" };
 
 export default defineConfig({
   plugins: [
     svelte(),
     webExtension({
-      manifest: manifestJson, // Use the imported JSON object
+      manifest: {
+        // Instead of a path, define it inline or import it
+        name: "Reference Radar Capture",
+        version: "0.1",
+        manifest_version: 3,
+        description: "Save references to your Reference Radar account.",
+        action: {
+          default_popup: "popup.html",
+          default_icon: {
+            16: "icons/icon16.png",
+            48: "icons/icon48.png",
+            128: "icons/icon128.png",
+          },
+        },
+        permissions: ["tabs", "storage", "activeTab"],
+        host_permissions: ["https://reference-radar.vercel.app/*"],
+        background: {
+          service_worker: "background.js",
+          type: "module",
+        },
+        content_scripts: [
+          {
+            matches: ["https://reference-radar.vercel.app/*"],
+            js: ["content.js"],
+          },
+        ],
+      },
     }),
   ],
   build: {
     outDir: "dist",
     emptyOutDir: true,
-    // target: "esnext", // User had this, can be kept or removed if not strictly needed now
+    target: "esnext",
     rollupOptions: {
       input: {
-        // Only popup.html should be an explicit input.
-        // Background and content scripts will be inferred by the plugin from manifest.json
         popup: resolve(__dirname, "popup.html"),
+        background: resolve(__dirname, "src/background.ts"),
+        content: resolve(__dirname, "src/content.ts"),
       },
       output: {
-        format: "es",
-        inlineDynamicImports: false, // Required for multiple outputs and code splitting
+        format: "es", // ✅ Use ES modules for code splitting
+        inlineDynamicImports: false,
         entryFileNames: "[name].js",
         chunkFileNames: "chunks/[name]-[hash].js",
         assetFileNames: "assets/[name]-[hash][extname]",

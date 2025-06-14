@@ -10,9 +10,12 @@
   },
   "devDependencies": {
     "@samrum/vite-plugin-web-extension": "^5.1.1",
-    "@sveltejs/vite-plugin-svelte": "^5.0.3",
+    "@sveltejs/vite-plugin-svelte": "^2.5.3",
     "@types/chrome": "^0.0.323",
-    "svelte": "^5.28.1",
-    "vite": "^6.3.5"
+    "svelte": "^4.2.20",
+    "vite": "^4.5.14"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.50.0"
   }
 }
